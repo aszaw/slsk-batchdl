@@ -25,10 +25,6 @@ public static class Printing
         string user = showUser && response?.Username != null ? response.Username + "\\" : "";
         string speed = showSpeed && response?.Username != null ? $"({response.UploadSpeed / 1024.0 / 1024.0:F2}MB/s) " : "";
         string fname = fullpath ? file.Filename : (showUser ? "..\\" : "") + (customPath.Length == 0 ? Utils.GetFileNameSlsk(file.Filename) : customPath);
-        if (!Utils.ContainsOnlyAscii(fname)) {
-            Byte[] asciiEncoding = ascii.GetBytes(fname);
-            fname = ascii.GetString(asciiEncoding);
-        }
         string length = Utils.IsMusicFile(file.Filename) ? (file.Length ?? -1).ToString() + "s" : "";
         string displayText;
         if (!infoFirst)
@@ -47,14 +43,6 @@ public static class Printing
         string cond = "";
         if (nec != null || pref != null)
             cond = $" ({(necStr + prefStr).TrimEnd(' ', ',')})";
-
-        if (!Utils.ContainsOnlyAscii(displayText)) {
-            displayText = Utils.RemoveNonAscii(displayText);
-        }
-
-        if (!Utils.ContainsOnlyAscii(cond)) {
-            cond = Utils.RemoveNonAscii(cond);
-        }
 
         return displayText + cond;
     }
@@ -344,6 +332,7 @@ public static class Printing
         }
         else if ((progress == null || Console.IsOutputRedirected) && print)
         {
+
             Console.WriteLine(item);
         }
     }
